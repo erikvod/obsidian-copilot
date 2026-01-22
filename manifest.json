@@ -1,11 +1,10 @@
 {
-	"id": "companion",
-	"name": "Companion",
+	"id": "obsidian-copilot",
+	"name": "Obsidian CoPilot",
 	"version": "1.8.0",
 	"minAppVersion": "1.1.16",
 	"description": "Autocomplete with AI, including ChatGPT and ollama, through a copilot-like interface.",
-	"author": "rizerphe",
-	"authorUrl": "https://github.com/rizerphe",
-	"fundingUrl": "https://www.buymeacoffee.com/rizerphe",
+	"author": "erikvod",
+	"authorUrl": "https://github.com/erikvod",
 	"isDesktopOnly": false
 }

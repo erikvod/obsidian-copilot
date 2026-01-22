@@ -1,5 +1,5 @@
 {
-	"name": "obsidian-companion",
+	"name": "obsidian-copilot",
 	"version": "1.8.0",
 	"description": "Autocomplete with AI, including ChatGPT, through a copilot-like interface.",
 	"main": "main.js",
@@ -9,7 +9,7 @@
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
 	"keywords": [],
-	"author": "rizerphe",
+	"author": "erikvod",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
