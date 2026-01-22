@@ -15,12 +15,12 @@ export const settings_schema = z.object({
 export type Settings = z.infer<typeof settings_schema>;
 
 const default_settings: Settings = {
-	system_prompt: "",
-	user_prompt:
-		'{{#context}}Context:\n\n{{context}}\n\n=================================\n{{/context}}Continue the following text:\n\n{{last_line}}',
-	max_tokens: 50,
-	temperature: 1.0,
-	prompt_length: 6000,
+	system_prompt:
+		"You are an AI code completion assistant. Complete the text inline with a short, natural continuation. Only write the completion text - do not repeat the user's text. Keep completions brief and contextual.",
+	user_prompt: "{{prefix}}",
+	max_tokens: 20,
+	temperature: 0.7,
+	prompt_length: 100000,
 };
 
 export const parse_settings = (data: string | null): Settings => {
