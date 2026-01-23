@@ -281,6 +281,76 @@ function ProviderModelChooser({
 	);
 }
 
+type AcceptPreset = "word" | "sentence" | "line" | "whole" | "custom";
+
+const ACCEPT_PRESETS: Record<
+	Exclude<AcceptPreset, "custom">,
+	{ label: string; settings: AcceptSettings }
+> = {
+	word: {
+		label: "One word at a time",
+		settings: {
+			splitter_regex: " ",
+			display_splitter_regex: "[.?!:;]",
+			completion_completeness_regex: ".*(?!p{L})[^d]$",
+			min_accept_length: 4,
+			min_display_length: 50,
+			retrigger_threshold: 48,
+		},
+	},
+	sentence: {
+		label: "One sentence at a time",
+		settings: {
+			splitter_regex: "\\.",
+			display_splitter_regex: "[.?!:;]",
+			completion_completeness_regex: ".*[^d]$",
+			min_accept_length: 4,
+			min_display_length: 50,
+			retrigger_threshold: 128,
+		},
+	},
+	line: {
+		label: "One line at a time",
+		settings: {
+			splitter_regex: "\n",
+			display_splitter_regex: "\n",
+			completion_completeness_regex: ".*$",
+			min_accept_length: 4,
+			min_display_length: 50,
+			retrigger_threshold: 128,
+		},
+	},
+	whole: {
+		label: "Whole completion",
+		settings: {
+			splitter_regex: "$",
+			display_splitter_regex: "$",
+			completion_completeness_regex: ".*",
+			min_accept_length: 0,
+			min_display_length: 0,
+			retrigger_threshold: 128,
+		},
+	},
+};
+
+function detectCurrentPreset(settings: AcceptSettings): AcceptPreset {
+	for (const [key, preset] of Object.entries(ACCEPT_PRESETS)) {
+		if (
+			settings.splitter_regex === preset.settings.splitter_regex &&
+			settings.display_splitter_regex ===
+				preset.settings.display_splitter_regex &&
+			settings.completion_completeness_regex ===
+				preset.settings.completion_completeness_regex &&
+			settings.min_accept_length === preset.settings.min_accept_length &&
+			settings.min_display_length === preset.settings.min_display_length &&
+			settings.retrigger_threshold === preset.settings.retrigger_threshold
+		) {
+			return key as AcceptPreset;
+		}
+	}
+	return "custom";
+}
+
 function AcceptSettingsComponent({
 	plugin,
 	reload_signal,
@@ -290,6 +360,9 @@ function AcceptSettingsComponent({
 }) {
 	const [accept_settings, _setAcceptSettings] = useState(
 		plugin.settings.accept
+	);
+	const [currentPreset, setCurrentPreset] = useState<AcceptPreset>(() =>
+		detectCurrentPreset(plugin.settings.accept)
 	);
 	const [delay, _setDelay] = useState(plugin.settings.delay_ms);
 	const [keybind, _setKeybind] = useState(plugin.settings.keybind);
@@ -302,6 +375,7 @@ function AcceptSettingsComponent({
 			model.cacher.accept_settings = settings;
 		}
 		plugin.saveData(plugin.settings);
+		setCurrentPreset(detectCurrentPreset(settings));
 	};
 	const setDelay = (delay: number) => {
 		_setDelay(delay);
@@ -314,6 +388,12 @@ function AcceptSettingsComponent({
 		plugin.settings.keybind = keybind;
 		plugin.saveData(plugin.settings);
 		reload_signal.reload = true;
+	};
+
+	const handlePresetChange = (preset: AcceptPreset) => {
+		if (preset !== "custom" && ACCEPT_PRESETS[preset]) {
+			setAcceptSettings(ACCEPT_PRESETS[preset].settings);
+		}
 	};
 
 	return (
@@ -377,75 +457,31 @@ function AcceptSettingsComponent({
 				</SettingsItem>
 			)}
 			<SettingsItem
-				name="Accept"
+				name="Accept mode"
 				description={
 					<div style={{ minWidth: "max-content" }}>
-						<div>These are presets.</div>
+						<div>How much to accept when pressing Tab.</div>
 						<div onClick={() => setExpanded(!expanded)}>
 							{expanded ? "▾" : "▸"} Advanced controls
 						</div>
 					</div>
 				}
 			>
-				<div className="ai-complete-accept-presets">
-					<button
-						onClick={() =>
-							setAcceptSettings({
-								splitter_regex: " ",
-								display_splitter_regex: "[.?!:;]",
-								completion_completeness_regex:
-									".*(?!p{L})[^d]$",
-								min_accept_length: 4,
-								min_display_length: 50,
-								retrigger_threshold: 48,
-							})
-						}
-					>
-						One word at a time
-					</button>
-					<button
-						onClick={() =>
-							setAcceptSettings({
-								splitter_regex: "\\.",
-								display_splitter_regex: "[.?!:;]",
-								completion_completeness_regex: ".*[^d]$",
-								min_accept_length: 4,
-								min_display_length: 50,
-								retrigger_threshold: 128,
-							})
-						}
-					>
-						One sentence at a time
-					</button>
-					<button
-						onClick={() =>
-							setAcceptSettings({
-								splitter_regex: "\n",
-								display_splitter_regex: "\n",
-								completion_completeness_regex: ".*$",
-								min_accept_length: 4,
-								min_display_length: 50,
-								retrigger_threshold: 128,
-							})
-						}
-					>
-						One line at a time
-					</button>
-					<button
-						onClick={() =>
-							setAcceptSettings({
-								splitter_regex: "$",
-								display_splitter_regex: "$",
-								completion_completeness_regex: ".*",
-								min_accept_length: 0,
-								min_display_length: 0,
-								retrigger_threshold: 128,
-							})
-						}
-					>
-						Whole completion
-					</button>
-				</div>
+				<select
+					className="dropdown"
+					value={currentPreset}
+					onChange={(e) =>
+						handlePresetChange(e.target.value as AcceptPreset)
+					}
+				>
+					<option value="word">One word at a time</option>
+					<option value="sentence">One sentence at a time</option>
+					<option value="line">One line at a time</option>
+					<option value="whole">Whole completion</option>
+					{currentPreset === "custom" && (
+						<option value="custom">Custom</option>
+					)}
+				</select>
 			</SettingsItem>
 			{expanded && (
 				<div className="ai-complete-advanced-settings">
