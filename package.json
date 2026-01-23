@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-copilot",
-	"version": "1.8.0",
-	"description": "Autocomplete with AI, including ChatGPT, through a copilot-like interface.",
+	"version": "1.0.0",
+	"description": "Autocomplete with AI using ChatGPT, Claude, Groq, or Ollama through a copilot-like interface.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

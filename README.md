@@ -1,86 +1,105 @@
-# Obsidian Copilot
+# Obsidian CoPilot
 
-Companion is an Obsidian plugin that adds an **AI-powered autocomplete** feature to your note-taking and personal knowledge management platform. With Companion, you can write notes more quickly and easily by receiving suggestions for completing words, phrases, and even entire sentences based on the context of your writing. The autocomplete feature uses OpenAI's state-of-the-art **GPT-3 and GPT-3.5, including ChatGPT, and locally hosted Ollama models**, among others, to generate smart suggestions that are tailored to your specific writing style and preferences. Support for more models is planned, too.
+AI-powered autocomplete for Obsidian with support for ChatGPT, Claude, Groq, and Ollama.
 
-Companion's autocomplete feature is designed to be unobtrusive, providing suggestions in ghost text that can be accepted or ignored by the you as you see fit, similar to what github copilot does. With Companion, you can write notes more efficiently and effectively, leveraging the power of AI to enhance your productivity and creativity. Whether you're a student, a researcher, or a knowledge worker, Companion can help you to take your note-taking and knowledge management to the next level.
+> This plugin is a fork of [obsidian-companion](https://github.com/rizerphe/obsidian-companion) by [rizerphe](https://github.com/rizerphe).
 
-Uses [codemirror-companion-extension](https://www.npmjs.com/package/codemirror-companion-extension), my own fork of saminzadeh's awesome [codemirror-extension-inline-suggestion](https://github.com/saminzadeh/codemirror-extension-inline-suggestion)
+## Features
 
-# Demo
+- **AI-powered autocomplete** - Get intelligent suggestions as you type, similar to GitHub Copilot
+- **Multiple AI providers** - Choose from OpenAI (ChatGPT), Anthropic (Claude), Groq, or local Ollama models
+- **Vault context awareness** - Optionally scan your vault to provide context-aware completions that match your writing style
+- **Streaming completions** - See suggestions appear in real-time
+- **Customizable prompts** - Configure system and user prompts per model
+- **Presets** - Save and quickly switch between different configurations
 
-![demo](https://raw.githubusercontent.com/rizerphe/obsidian-companion/main/screenshots/demo.gif)
+## Supported Providers
 
-# Installation
+| Provider | Description |
+|----------|-------------|
+| **OpenAI** | GPT-4, GPT-3.5-turbo, and other OpenAI models |
+| **Anthropic** | Claude 3.5 Sonnet, Claude 3 Haiku, and other Claude models |
+| **Groq** | Ultra-fast inference with Llama, Mixtral, and other models |
+| **Ollama** | Run models locally with no API costs |
 
-Companion is now available in the [Obsidian Community Plugin Directory](https://obsidian.md/plugins?id=companion). Here's how to install it:
+## Installation
 
-1. Find [Companion](https://obsidian.md/plugins?id=companion) in the **Community Plugins** settings page in Obsidian.
-2. Click on the **Install** button next to the Companion plugin.
-3. Once the installation is complete, you will see a confirmation message in the top right corner of the Obsidian window.
-4. Finally, enable the Companion plugin by toggling the switch next to its name in the Community Plugins settings page.
+### From Obsidian Community Plugins
 
-# How to Use
+1. Open **Settings** > **Community plugins** in Obsidian
+2. Click **Browse** and search for "CoPilot"
+3. Click **Install**, then **Enable**
 
-To use Companion with OpenAI's ChatGPT models, you'll need to generate an API key and configure the plugin settings. Here's how:
+### Manual Installation
 
-1. Go to the [OpenAI API Keys](https://platform.openai.com/account/api-keys) page and log in to your account (or create a new one if you don't have one already).
-2. Click the "Create new secret Key" button to create a new API key.
-3. Copy the API key to your clipboard.
-4. In Obsidian, open the Companion plugin settings by clicking on the gear icon in the bottom left corner of the app and looking for the "Companion" tab in the "Community plugins" section.
-5. Paste your OpenAI API key into the "API Key" field.
-6. Close the Companion settings.
-7. To activate the autocomplete feature, open the command palette by pressing `Ctrl/Cmd + P` and search for "Toggle Completion". Select the command and hit Enter.
-8. Once a suggestion appears, use the `Tab` key to accept the next word.
+1. Download the latest release from the [releases page](https://github.com/erikvod/obsidian-copilot/releases)
+2. Extract the files to your vault's `.obsidian/plugins/obsidian-copilot/` folder
+3. Enable the plugin in **Settings** > **Community plugins**
 
-Once you've completed these steps, the Companion plugin will be ready to suggest completions based on the context of your writing. You can accept or ignore these suggestions as you see fit, and continue writing notes more efficiently and effectively with the power of AI.
+## Quick Start
 
-## How to Use (Mobile)
+1. Open plugin settings and select your preferred AI provider
+2. Enter your API key (not required for Ollama)
+3. Select a model from the dropdown
+4. Open the command palette (`Ctrl/Cmd + P`) and run "Toggle Completion"
+5. Start typing and press `Tab` to accept suggestions
 
-To use Companion with OpenAI's ChatGPT models on your mobile device, follow these steps:
+## Vault Context
 
-1. Launch the Obsidian app on your mobile device.
-2. Access the settings menu by tapping on the three-dot icon in the top left corner of the app, and then the seettings gear.
-3. Select "Mobile" from the options.
-4. In the mobile settings, locate the "More toolbar options" section.
-5. Look for the "Companion: Accept completion" command in the list of available commands and add it to your toolbar.
-6. While writing a note, tap on the newly added button in the toolbar whenever you want to accept the suggested completion.
+The vault context feature scans your notes to build a compact summary of your vault's topics, terminology, and writing style. This context is injected into AI prompts to provide more personalized completions.
 
-If you have any issues with installation or usage, feel free to submit an issue at the [plugin's GitHub repository](https://github.com/rizerphe/obsidian-companion).
+To enable:
+1. Go to plugin settings
+2. Enable "Vault Context"
+3. Configure include/exclude patterns as needed
+4. Click "Rebuild vault context"
 
-## Groq
+## Configuration
 
-Groq is an ultrafast model provider, and for now (end of May 2024) is fully free - their paid plans are still "coming soon". Groq has very generous usage quotas. This is probably the best choice right now. Just switch the provider to groq, set your API key and you're good to go!
+### Global Settings
 
-## Ollama
+- **Provider** - Select your AI provider (OpenAI, Anthropic, Groq, Ollama)
+- **Model** - Choose which model to use for completions
+- **Max completion tokens** - Limit response length (25 or 50 tokens)
+- **Delay** - Time to wait before requesting a completion
+- **Enable on startup** - Automatically enable completions when Obsidian starts
+- **Stream completions** - Show suggestions as they generate
 
-Ollama is a tool for running models locally, and yet another solution to problems with latency and pricing. With ollama and a small model - such as phi-3 - you can freely lower the delay as much as you'd want, and the frequent requests will not cost you a fortune. To use ollama with this plugin, make sure the ollama service is running and switch the provider to ollama - that's it!
+### Per-Model Settings
 
-# Presets
+Each model can be configured with:
+- **System prompt** - Instructions for the AI
+- **User prompt** - Template for user messages (supports `{{prefix}}`, `{{suffix}}`, `{{vault_context}}`)
+- **Temperature** - Controls randomness (lower = more deterministic)
 
-Companion's "Presets" feature allows you to save your current settings as a preset, enable a "command" switch for that preset, and then use the preset as a global editor command in the command palette. This can be useful if you have certain settings that you use frequently and want to access them quickly and easily.
-To use the Presets feature, follow these steps:
+## Presets
 
-1. Open the Companion plugin settings by clicking on the gear icon in the bottom left corner of the app and looking for the "Companion" tab in the "Community plugins" section.
-2. Configure the settings that you want to save as a preset.
-3. Enter a name for your preset and click the "Save Preset" button at the bottom of the settings page.
-4. Toggle the "Command" switch for your new preset to enable it as a global editor command.
-5. To use the preset, open the command palette by pressing `Ctrl/Cmd + P` and search for the name of your preset. Select the command and hit Enter.
+Save your current settings as a preset to quickly switch between configurations:
 
-You can create multiple presets with different settings and enable them as global editor commands, making it easy to switch between different configurations as you work. With the Presets feature, you can customize your Companion experience to suit your needs and work more efficiently with AI-powered autocomplete suggestions.
+1. Configure your preferred settings
+2. Enter a preset name and click "Save Preset"
+3. Enable the "Command" toggle to add a command palette entry
+4. Switch presets via the command palette or settings
 
-# Completion providers
+## Mobile Usage
 
-This plugin can use more than one source of completions, with more on the way. Currently it can:
+1. Go to **Settings** > **Mobile**
+2. Find "More toolbar options"
+3. Add "Companion: Accept completion" to your toolbar
+4. Tap the button to accept suggestions while writing
 
--   Ask **ChatGPT** to "Continue the following"
--   Use the usual **GPT-3** models
--   Use **AI21's Jurassic-2** models
--   Use models hosted on **goose.ai**
+## Commands
 
-If there are any sources you'd like to suggest, feel free to open an issue.
+- **Toggle Completion** - Enable/disable autocomplete
+- **Accept completion** - Accept the current suggestion
+- **Rebuild vault context** - Regenerate vault context from your notes
 
-# Say Thank You
+## Acknowledgments
 
-Thanks to all those using my plugin! I made this project as a passion project, and I don't expect to receive any financial compensation for it. However, if you find my work useful and want to support me, feel free to <a href="https://www.buymeacoffee.com/rizerphe" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+This plugin is based on [obsidian-companion](https://github.com/rizerphe/obsidian-companion) by [rizerphe](https://github.com/rizerphe). Thank you for creating the original plugin and making it open source.
 
-Your support will be greatly appreciated and will help me continue working on this project and others like it. But if you can't or don't want to contribute financially, don't worry, I'm just happy that my work is useful to you!
+Uses [codemirror-companion-extension](https://www.npmjs.com/package/codemirror-companion-extension) for inline suggestions.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.

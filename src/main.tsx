@@ -95,7 +95,7 @@ const DEFAULT_SETTINGS: CompanionSettings = {
 
 export default class Companion extends Plugin {
 	settings: CompanionSettings;
-	enabled: boolean = false;
+	enabled = false;
 	force_fetch: () => void = () => {};
 	last_used_model: CompletionCacher | null = null;
 	models: {
@@ -403,7 +403,7 @@ export default class Companion extends Plugin {
 		if (!cacher) throw { name: "ModelNotFound" };
 		await this.load_model(cacher);
 		const vault_context = this.vaultContextManager?.getContext() ?? undefined;
-		for await (let completion of cacher.complete(
+		for await (const completion of cacher.complete(
 			{
 				prefix: prefix,
 				suffix: suffix,
