@@ -51,6 +51,7 @@ interface CompanionSettings {
 	keybind: string | null;
 	delay_ms: number;
 	stream: boolean;
+	max_completion_tokens: 25 | 50;
 	accept: AcceptSettings;
 	provider_settings: {
 		[provider: string]: {
@@ -72,6 +73,7 @@ const DEFAULT_SETTINGS: CompanionSettings = {
 	keybind: "Tab",
 	delay_ms: 2000,
 	stream: true,
+	max_completion_tokens: 50,
 	accept: {
 		splitter_regex: " ",
 		display_splitter_regex: "[.?!:;]",
@@ -406,6 +408,7 @@ export default class Companion extends Plugin {
 				prefix: prefix,
 				suffix: suffix,
 				vault_context: vault_context,
+				max_tokens: this.settings.max_completion_tokens,
 			},
 			this.settings.stream
 		)) {

@@ -569,6 +569,9 @@ export default function SettingsComponent({
 		plugin.settings.enable_by_default
 	);
 	const [streaming_mode, setStreamingMode] = useState(plugin.settings.stream);
+	const [maxTokens, setMaxTokens] = useState<25 | 50>(
+		plugin.settings.max_completion_tokens
+	);
 
 	return (
 		<>
@@ -619,6 +622,30 @@ export default function SettingsComponent({
 							plugin.saveData(plugin.settings);
 						}}
 					/>
+				</SettingsItem>
+				<SettingsItem
+					name="Max completion tokens"
+					description={
+						<>
+							Maximum number of tokens for each completion.
+							Lower values are faster and cheaper, higher values
+							allow longer completions.
+						</>
+					}
+				>
+					<select
+						className="dropdown"
+						value={maxTokens}
+						onChange={(e) => {
+							const value = parseInt(e.target.value) as 25 | 50;
+							setMaxTokens(value);
+							plugin.settings.max_completion_tokens = value;
+							plugin.saveData(plugin.settings);
+						}}
+					>
+						<option value={25}>25 tokens</option>
+						<option value={50}>50 tokens</option>
+					</select>
 				</SettingsItem>
 				<AcceptSettingsComponent
 					plugin={plugin}

@@ -150,7 +150,7 @@ export default class ChatGPT implements Model {
 				...this.model_parameters(model_settings),
 				messages: await this.generate_messages(prompt, model_settings),
 				model: this.id,
-				max_tokens: 64,
+				max_tokens: prompt.max_tokens || 50,
 			});
 
 			return this.interpret(
@@ -171,7 +171,7 @@ export default class ChatGPT implements Model {
 				...this.model_parameters(model_settings),
 				messages: await this.generate_messages(prompt, model_settings),
 				model: this.id,
-				max_tokens: 64,
+				max_tokens: prompt.max_tokens || 50,
 				stream: true,
 			});
 

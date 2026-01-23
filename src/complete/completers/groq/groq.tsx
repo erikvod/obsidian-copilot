@@ -129,7 +129,7 @@ export default class GroqModel implements Model {
 			),
 			model: this.id,
 			temperature: model_settings.temperature,
-			max_tokens: model_settings.max_tokens,
+			max_tokens: prompt.max_tokens || model_settings.max_tokens || 50,
 		});
 
 		return this.interpret(
@@ -149,7 +149,7 @@ export default class GroqModel implements Model {
 			messages: this.formulate_messages(prompt_data, model_settings),
 			model: this.id,
 			temperature: model_settings.temperature,
-			max_tokens: model_settings.max_tokens,
+			max_tokens: prompt.max_tokens || model_settings.max_tokens || 50,
 			stream: true,
 		});
 

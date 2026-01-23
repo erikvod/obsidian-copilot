@@ -84,6 +84,7 @@ export default class OllamaModel implements Model {
 				stream: false,
 				options: {
 					temp: model_settings.temperature,
+					num_predict: prompt.max_tokens || 50,
 				},
 			}),
 			throw: true,
@@ -145,6 +146,7 @@ export default class OllamaModel implements Model {
 				stream: true,
 				options: {
 					temp: model_settings.temperature,
+					num_predict: prompt.max_tokens || 50,
 				},
 			});
 			request.write(body);
