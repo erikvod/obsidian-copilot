@@ -64,11 +64,25 @@ export class VaultScanner {
 	}
 
 	private matchGlob(path: string, pattern: string): boolean {
-		const regexPattern = pattern
+		// Escape special regex characters except glob wildcards
+		let regexPattern = pattern
+			.replace(/[.+^${}()|[\]\\]/g, "\\$&") // Escape special chars
 			.replace(/\*\*/g, "{{GLOBSTAR}}")
 			.replace(/\*/g, "[^/]*")
-			.replace(/{{GLOBSTAR}}/g, ".*")
 			.replace(/\?/g, ".");
+
+		// Handle **/ at the start or middle - should match zero or more directories
+		regexPattern = regexPattern.replace(
+			/\{\{GLOBSTAR\}\}\//g,
+			"(?:.*/)?"
+		);
+		// Handle /** at the end - should match zero or more path segments
+		regexPattern = regexPattern.replace(
+			/\/\{\{GLOBSTAR\}\}/g,
+			"(?:/.*)?"
+		);
+		// Handle remaining ** (standalone or at boundaries)
+		regexPattern = regexPattern.replace(/\{\{GLOBSTAR\}\}/g, ".*");
 
 		const regex = new RegExp(`^${regexPattern}$`);
 		return regex.test(path);
