@@ -1,4 +1,4 @@
-# Obsidian CoPilot
+# CoPilot
 
 AI-powered autocomplete for Obsidian with support for ChatGPT, Claude, Groq, and Ollama.
 
