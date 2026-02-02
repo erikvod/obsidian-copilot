@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-copilot",
 	"name": "Obsidian CoPilot",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "1.1.16",
 	"description": "Autocomplete with AI using ChatGPT, Claude, Groq, or Ollama through a copilot-like interface.",
 	"author": "erikvod",
