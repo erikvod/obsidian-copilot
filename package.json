@@ -1,6 +1,6 @@
 {
 	"name": "copilot",
-	"version": "1.0.3",
+	"version": "1.0.5",
 	"description": "Autocomplete with AI using ChatGPT, Claude, Groq, or Ollama through a copilot-like interface.",
 	"main": "main.js",
 	"scripts": {
